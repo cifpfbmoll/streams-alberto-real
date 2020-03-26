@@ -19,10 +19,13 @@ public class Ejercicio71 {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         // TODO code application logic here
-       bytestream p1 = new bytestream();
-       p1.readAndWtrite("c:\\entrada.txt","d:\\salida.txt"); //entrada archivo de origen salida destino
+       //bytestream p1 = new bytestream();
+       //p1.readAndWtrite("c:\\entrada.txt","d:\\salida.txt"); //entrada archivo de origen salida destino
         CharacterStreams p2 = new CharacterStreams();
         p2.readAndPrint("c:\\entrada.txt");
         p2.readAndWrite("C:\\entrada.txt", "d:\\salida1232.txt");
+        BufferStream p3 = new BufferStream();
+        p3.readAndPrint("C:\\entrada.txt");
+        p3.readAndWrite("c:\\entrada.txt","d:\\salida34.txt");
     }
 }
