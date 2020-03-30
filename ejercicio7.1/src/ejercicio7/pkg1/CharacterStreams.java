@@ -30,7 +30,7 @@ public class CharacterStreams {
         int k = 0;
         char inicial = '#';
         char linea = '{';
-        String prueba[][] = {{}, {"publicacion: "}, {"director: "}, {"durcion: "},
+        String valores[][] = {{}, {"publicacion: "}, {"director: "}, {"durcion: "},
         {"sinopsis: "}, {"reaparto: "}, {"session: "}};
         File entrada = new File(origen);
         try (FileReader lector = new FileReader(entrada)) {
@@ -39,14 +39,14 @@ public class CharacterStreams {
                 if (unCaracter == inicial) {
                     unCaracter=0;
                     System.out.println("");
-                    if (k < prueba.length - 1) {
+                    if (k < valores.length - 1) {
                     } else {
                         k = 0;
                     }
                     k++;
                     System.out.println("");
-                    for (int j = 0; j < prueba[k].length; j++) {
-                        System.out.print(prueba[k][j]);
+                    for (int j = 0; j < valores[k].length; j++) {
+                        System.out.print(valores[k][j]);
                     }
                 } else if (unCaracter == linea) {
                     unCaracter=0;
@@ -66,7 +66,7 @@ public class CharacterStreams {
         int k = 0;
         char inicial = '#';
         char linea = '{';
-        String prueba[][] = {{}, {"publicacion: "}, {"director: "}, {"durcion: "},
+        String valores[][] = {{}, {"publicacion: "}, {"director: "}, {"durcion: "},
         {"sinopsis: "}, {"reaparto: "}, {"session: "}};
         String texto = " ";
         File entrada = new File(origen);
@@ -80,6 +80,9 @@ public class CharacterStreams {
             System.out.println("error de entrada");
         }
         File salida = new File(destino);
+         if (salida.exists()==false){
+                throw new FileNotFoundException();
+            }
         try (FileWriter escribir = new FileWriter(salida)) {
             for (int i = 0; i < texto.length(); i++) {
                 int textoEntrada;
@@ -87,15 +90,15 @@ public class CharacterStreams {
                 if (textoEntrada == inicial) {
                     escribir.write(13);
                     escribir.write(10);
-                    if (k < prueba.length - 1) {
+                    if (k < valores.length - 1) {
                     } else {
                         k = 0;
                     }
                     k++;
                     escribir.write(13);
                     escribir.write(10);
-                    for (int j = 0; j < prueba[k].length; j++) {
-                        escribir.write(prueba[k][j]);
+                    for (int j = 0; j < valores[k].length; j++) {
+                        escribir.write(valores[k][j]);
                     }
                 } else if (textoEntrada == linea) {
                     escribir.write(13);

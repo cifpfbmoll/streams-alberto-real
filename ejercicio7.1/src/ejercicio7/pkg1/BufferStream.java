@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package ejercicio7.pkg1;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,8 +27,8 @@ public class BufferStream {
     }
 
     public void readAndPrint(String entrada) throws IOException {
-        int k = 0;
-        String prueba[][] = {{}, {"publicacion: "}, {"director: "}, {"durcion: "},
+        int k =0;
+        String valores[][] = {{"----"},{"publicacion: "}, {"director: "}, {"durcion: "},
         {"sinopsis: "}, {"reaparto: "}, {"session: "}};
         File texto = new File(entrada);
         try (BufferedReader lector = new BufferedReader(new FileReader(texto))) {
@@ -39,27 +38,17 @@ public class BufferStream {
             while (!finArchivo) {
                 linea = lector.readLine();
                 if (linea != null) {
-                    for (int i = 0; i < linea.length(); i++) {
-                        if (linea.charAt(i) == '{') {
-                            System.out.println("");
-                            System.out.println("");
-                            System.out.print("-----");
-                            i++;
-                        } else if (linea.charAt(i) == '#') {
-                            System.out.println("");
-                            System.out.println("");
-                            
-                            i++;
-                            if (k < prueba.length - 1) {
-                            } else {
-                                k = 0;
-                            }
-                            k++;
-                            for (int j = 0; j < prueba[k].length; j++) {
-                                System.out.print(prueba[k][j]);
-                            }
+                    finLinea = linea.split("[\\{#]");
+                    for (int i = 0; i < finLinea.length; i++) {
+                        for (int j = 0; j < valores[k].length; j++) {
+                            System.out.print(valores[k][j]);  
                         }
-                        System.out.print(linea.charAt(i));
+                        if (k == 6) {
+                            k = 0;
+                        } else {
+                            k++;
+                        }
+                        System.out.println(finLinea[i]);
                     }
                 } else {
                     finArchivo = true;
@@ -75,35 +64,40 @@ public class BufferStream {
     public void readAndWrite(String entrada, String destino) throws IOException {
         int k = 0;
         String linea = "";
-        String test ="";
-        String prueba[][] = {{}, {"publicacion: "}, {"director: "}, {"durcion: "},
+        String test = "";
+        String valores[][] = {{}, {"publicacion: "}, {"director: "}, {"durcion: "},
         {"sinopsis: "}, {"reaparto: "}, {"session: "}};
         File texto = new File(entrada);
         try (BufferedReader lector = new BufferedReader(new FileReader(texto))) {
             linea = lector.readLine();
             lector.close();
             File salida = new File(destino);
-            try (BufferedWriter escritura = new BufferedWriter(new FileWriter(salida))){
-            for (int i =0; i<linea.length();i++){
-                test += linea.charAt(i);
-                if (linea.charAt(i)=='{'){
-                    test+="-----";
-                    test+="\r\n";
-                } else if (linea.charAt(i) == '#') {
-                        test+="\r\n";
-                            if (k < prueba.length - 1) {
-                            } else {
-                                k = 0;
-                            }
-                            k++;
-                            for (int j = 0; j < prueba[k].length; j++) {
-                                test+=prueba[k][j];
-                            }
-                        }  
+            if (salida.exists()==false){
+                throw new FileNotFoundException();
             }
-            escritura.write(test);
-            escritura.close();
-            }catch(IOException esc){
+            try (BufferedWriter escritura = new BufferedWriter(new FileWriter(salida))) {
+                for (int i = 0; i < linea.length(); i++) {
+                    test += linea.charAt(i);
+                    if (linea.charAt(i) == '{') {
+                        test += "\r\n";
+                        test += "-----";
+
+                    } else if (linea.charAt(i) == '#') {
+                        //test += "\r\n";
+                        if (k < valores.length - 1) {
+                        } else {
+                            k = 0;
+                        }
+                        k++;
+                        for (int j = 0; j < valores[k].length; j++) {
+                            test += "\r\n";
+                            test += valores[k][j];
+                        }
+                    }
+                }
+                escritura.write(test);
+                escritura.close();
+            } catch (IOException esc) {
                 System.out.println("error salida");
             }
         } catch (IOException exc) {
@@ -111,7 +105,8 @@ public class BufferStream {
             errorlog(exc);
         }
     }
-        public void errorlog(IOException exc) throws FileNotFoundException {
+
+    public void errorlog(IOException exc) throws FileNotFoundException {
         Date fecha = new Date();
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

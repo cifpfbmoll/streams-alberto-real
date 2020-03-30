@@ -29,7 +29,7 @@ public class bytestream {
         int k = 0;
         char inicial = '#';
         char linea = '{';
-        String prueba[][] = {{},{"publicacion: "}, {"director: "}, {"durcion: "},
+        String valores[][] = {{},{"publicacion: "}, {"director: "}, {"durcion: "},
         {"sinopsis: "}, {"reaparto: "}, {"session: "}};
         try (FileInputStream entrada = new FileInputStream(origen); 
                 FileOutputStream salida = new FileOutputStream(destino)) {
@@ -45,14 +45,14 @@ public class bytestream {
                         }
                         salida.write(13);
                         salida.write(10);
-                        if (k < prueba.length-1) {
+                        if (k < valores.length-1) {
                         } else {
                             k = 0;
                         }k++;
                         salida.write(13);
                         salida.write(10);
-                        for (int j = 0; j < prueba[k].length; j++) {
-                            byte[] Stringtobyte = prueba[k][j].getBytes();
+                        for (int j = 0; j < valores[k].length; j++) {
+                            byte[] Stringtobyte = valores[k][j].getBytes();
                             salida.write(Stringtobyte);
                         }
                     } else if ((char) i == linea) {
