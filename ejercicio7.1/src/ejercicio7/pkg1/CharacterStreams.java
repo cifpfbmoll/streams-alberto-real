@@ -58,7 +58,9 @@ public class CharacterStreams {
             }
             lector.close();
         } catch (IOException exc) {
-            errorlog(exc);
+              String error = "la ruta introducida para el fichero de destino es \n"
+                    + "incorrecta o insesistente";
+            errorlog(exc,error);
             System.out.println("error");
         }
     }
@@ -76,8 +78,10 @@ public class CharacterStreams {
                 texto += ((char) unCaracter);
             }
         } catch (IOException exc) {
-            errorlog(exc);
             System.out.println("error de entrada");
+             String error = "la ruta introducida para el fichero de destino es \n"
+                    + "incorrecta o insesistente";
+            errorlog(exc,error);
         }
         File salida = new File(destino);
          if (salida.exists()==false){
@@ -111,11 +115,13 @@ public class CharacterStreams {
             }
             escribir.close();
         } catch (IOException exc) {
-            errorlog(exc);
+              String error = "la ruta introducida para el fichero de destino es \n"
+                    + "incorrecta o insesistente";
+            errorlog(exc,error);
             System.out.println("error de salida");
         }
     }
-    public void errorlog(IOException exc) throws FileNotFoundException {
+    public void errorlog(IOException exc, String error) throws FileNotFoundException {
         Date fecha = new Date();
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -124,10 +130,14 @@ public class CharacterStreams {
         DateFormat fechaHora = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy  ");
         try (FileOutputStream errorlog = new FileOutputStream("D:\\log.txt", true)) {
             byte[] strToBytes = sStackTrace.getBytes();
+            byte[] mensaje = error.getBytes();
             byte[] fechatobyte = fechaHora.format(fecha).getBytes();
             errorlog.write(13);
             errorlog.write(10);
             errorlog.write(fechatobyte);
+            errorlog.write(mensaje);
+            errorlog.write(13);
+            errorlog.write(10);
             errorlog.write(strToBytes);
         } catch (IOException es) {
             System.out.println("error añadido al log");
