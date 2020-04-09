@@ -5,36 +5,45 @@
  */
 package ejercicio7.pkg1;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.io.StringWriter;
-import java.io.PrintWriter;
+import java.util.Scanner;
 
 /**
  *
  * @author Alberto Real
  */
-public class bytestream {
+public final class bytestream {
 
     public bytestream() {
     }
 
-    public void readAndWtrite(String origen, String destino) throws FileNotFoundException {
+    public static String entrada(String tipo) throws FileException {
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("introduce ruta del fichero "+tipo +" extension");
+        System.out.println("(Ejemplo archivo.txt)");
+        String ruta = entrada.nextLine();
+        File existe = new File(ruta);
+        if(ruta.equals("")||existe.exists()==false){
+            throw new FileException("ruta no valida " +tipo );
+        }
+        return ruta;
+    }
+    
+    public static void readAndWtrite() throws FileNotFoundException, FileException {
         int i;
         int k = 0;
         char inicial = '#';
         char linea = '{';
         String valores[][] = {{},{"publicacion: "}, {"director: "}, {"durcion: "},
         {"sinopsis: "}, {"reaparto: "}, {"session: "}};
-        try (FileInputStream entrada = new FileInputStream(origen); 
-                FileOutputStream salida = new FileOutputStream(destino)) {
+        try (FileInputStream texto = new FileInputStream(entrada("entrada")); 
+                FileOutputStream salida = new FileOutputStream(entrada("salida"))) {
             do {
-                i = entrada.read();
+                i = texto.read();
                 if (i != -1) {
                     if ((char) i == inicial) {
                         if (k == 0) {
@@ -70,27 +79,6 @@ public class bytestream {
                 }
             } while (i != -1);
         } catch (IOException exc) {
-            System.out.println("error de fichero origen ");
-            errorlog(exc);
-        }
-    }
-
-    public void errorlog(IOException exc) throws FileNotFoundException {
-        Date fecha = new Date();
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        exc.printStackTrace(pw);
-        String sStackTrace = sw.toString(); // stack trace as a string
-        DateFormat fechaHora = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy  ");
-        try (FileOutputStream errorlog = new FileOutputStream("D:\\log.txt", true)) {
-            byte[] strToBytes = sStackTrace.getBytes();
-            byte[] fechatobyte = fechaHora.format(fecha).getBytes();
-            errorlog.write(13);
-            errorlog.write(10);
-            errorlog.write(fechatobyte);
-            errorlog.write(strToBytes);
-        } catch (IOException es) {
-            System.out.println("error");
         }
     }
 }

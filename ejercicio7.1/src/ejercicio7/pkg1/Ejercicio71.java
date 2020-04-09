@@ -27,61 +27,41 @@ public class Ejercicio71 {
         // TODO code application logic here
         mostrarMenu();
     }
-
     public static void mostrarMenu() throws FileNotFoundException, IOException, ClassNotFoundException {
         Scanner entrada = new Scanner(System.in);
         System.out.println(" 1 para byte stream\n"
                 + " 2 para chart stream\n"
                 + " 3 para buffer stream \n"
-                + " 4 objetos\n "
+                + " 4 objetos \n"
                 + " 5 salir ");
         int menu = entrada.nextInt();
         switch (menu) {
             case 1: {
-                Scanner texto = new Scanner(System.in);
-                bytestream b1 = new bytestream();
-                System.out.println("origen");
-                String origen = texto.nextLine();
-                System.out.println("destino");
-                String destino = texto.nextLine();
-                b1.readAndWtrite(origen, destino);
-                mostrarMenu();
-                break;
+               try{
+                   bytestream.readAndWtrite();
+               }catch(FileException exc){
+                    System.out.println("Mensaje:" + exc.getMessage());
+                    exc.errorlog();
+                }
+               mostrarMenu();
+               break;
             }
             case 2: {
-                CharacterStreams c1 = new CharacterStreams();
-                try {
-                    Scanner texto = new Scanner(System.in);
-                    System.out.println("origen");
-                    String origen = texto.nextLine();
-                    System.out.println("destino");
-                    String destino = texto.nextLine();
-                    c1.readAndPrint(origen);
-                    c1.readAndWrite(origen, destino);
-                } catch (IOException ex) {
-                    System.out.println("error fichero salida");
-                    String error = "la ruta introducida para el fichero de destino es \n"
-                            + "incorrecta o insesistente";
-                    c1.errorlog(ex, error);
+               try{
+                   CharacterStreams.readAndWrite();
+               }catch(FileException exc){
+                    System.out.println("Mensaje:" + exc.getMessage());
+                    exc.errorlog();
                 }
                 mostrarMenu();
                 break;
             }
             case 3: {
-                BufferStream b1 = new BufferStream();
-                try {
-                    Scanner texto = new Scanner(System.in);
-                    System.out.println("origen");
-                    String origen = texto.nextLine();
-                    System.out.println("destino");
-                    String destino = texto.nextLine();
-                    b1.readAndPrint(origen);
-                    b1.readAndWrite(origen, destino);
-                } catch (IOException ex) {
-                    System.out.println("error fichero salida");
-                    String error = "la ruta introducida para el fichero de destino es "
-                            + "incorrecta o insesistente";
-                    b1.errorlog(ex, error);
+                try{
+                    BufferStream.readAndWrite();
+                }catch(FileException exc){
+                    System.out.println("Mensaje:" + exc.getMessage());
+                    exc.errorlog();
                 }
                 mostrarMenu();
                 break;
@@ -91,7 +71,6 @@ public class Ejercicio71 {
             }
         }
     }
-
     public static void printPelis(String objeto) throws FileNotFoundException, IOException, ClassNotFoundException {
         ObjectInputStream objetoFile = null;
         File fichero = new File(objeto);
@@ -99,12 +78,12 @@ public class Ejercicio71 {
         objetoFile = new ObjectInputStream(Finput);
         for (int i = 0; i < 2; i++) {
             Pelicula p1 = (Pelicula) objetoFile.readObject();
-            System.out.println("nombre : " + p1.getNombre());
+            p1.mostrar();
         }
     }
 
-    public static void ficheroObjeto(String entrada) throws FileNotFoundException, IOException {
-        File objeto = new File("d:\\objeto.obj");
+    public static void ficheroObjeto(String entrada, String salida) throws FileNotFoundException, IOException {
+        File objeto = new File(salida);
         FileOutputStream Fout = new FileOutputStream(objeto);
         ObjectOutputStream objetoFile = new ObjectOutputStream(Fout);
         BufferStream b1 = new BufferStream();
@@ -127,15 +106,22 @@ public class Ejercicio71 {
         int menu = entrada.nextInt();
         switch (menu) {
             case 1: {
-                ficheroObjeto("C:\\entrada.txt");
+                Scanner texto = new Scanner(System.in);
+                System.out.println("origen");
+                String origen =texto.nextLine();
+                System.out.println("destino");
+                String destino = texto.nextLine();
+                ficheroObjeto(origen,destino);
                 submenu();
                 break;
             }
             case 2: {
+                
                 break;
             }
             case 3: {
-                printPelis("d:\\objeto.obj");
+                Scanner texto = new Scanner(System.in);
+                printPelis(texto.nextLine());
                 submenu();
                 break;
             }
